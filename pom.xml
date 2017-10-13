@@ -23,6 +23,9 @@
 	</scm>
 
 	<properties>
+        <maven.compiler.source>1.7</maven.compiler.source>
+        <maven.compiler.target>1.7</maven.compiler.target>
+        <signature>java17</signature>
 		<okhttp.version>3.4.1</okhttp.version>
 	</properties>
 
