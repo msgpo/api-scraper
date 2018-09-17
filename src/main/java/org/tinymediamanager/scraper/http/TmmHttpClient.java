@@ -19,7 +19,13 @@ import java.io.File;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
+import java.security.cert.X509Certificate;
 import java.util.concurrent.TimeUnit;
+
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSocketFactory;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -64,6 +70,35 @@ public class TmmHttpClient {
       setProxy(builder);
     }
 
+    // accept untrusted/self signed SSL certs
+    if (Boolean.parseBoolean(System.getProperty("tmm.trustallcerts", "false"))) {
+      try {
+        final TrustManager[] trustAllCerts = new TrustManager[] { new X509TrustManager() {
+          @Override
+          public X509Certificate[] getAcceptedIssuers() {
+            return new X509Certificate[0];
+          }
+
+          @Override
+          public void checkServerTrusted(final X509Certificate[] chain, final String authType) {
+          }
+
+          @Override
+          public void checkClientTrusted(final X509Certificate[] chain, final String authType) {
+          }
+        } };
+        // Install the all-trusting trust manager
+        final SSLContext sslContext = SSLContext.getInstance("SSL");
+        sslContext.init(null, trustAllCerts, new java.security.SecureRandom());
+
+        // Create an ssl socket factory with our all-trusting manager
+        final SSLSocketFactory sslSocketFactory = sslContext.getSocketFactory();
+        builder.sslSocketFactory(sslSocketFactory, (X509TrustManager) trustAllCerts[0]);
+      }
+      catch (Exception ignored) {
+      }
+    }
+
     return builder.build();
   }
 
@@ -103,9 +138,9 @@ public class TmmHttpClient {
   }
 
   /**
-   * proxy settings have been changed in the class ProxySettings
+   * re-create the http client due to settings changes
    */
-  static void changeProxy() {
+  public static void recreateHttpClient() {
     // recreate a new client instance
     client = createHttpClient();
   }
