@@ -66,7 +66,6 @@ public class MediaArtwork {
    * @since 1.0
    */
   public enum PosterSizes {
-    XLARGE(BUNDLE.getString("Settings.image.xlarge") + ": ~3840x2160px", 16), //$NON-NLS-1$
     LARGE(BUNDLE.getString("Settings.image.large") + ": ~1000x1500px", 8), //$NON-NLS-1$
     BIG(BUNDLE.getString("Settings.image.big") + ": ~500x750px", 4), //$NON-NLS-1$
     MEDIUM(BUNDLE.getString("Settings.image.medium") + ": ~342x513px", 2), //$NON-NLS-1$
@@ -97,6 +96,7 @@ public class MediaArtwork {
    * @since 1.0
    */
   public enum FanartSizes {
+    XLARGE(BUNDLE.getString("Settings.image.xlarge") + ": ~3840x2160px", 16), //$NON-NLS-1$
     LARGE(BUNDLE.getString("Settings.image.large") + ": ~1920x1080px", 8), //$NON-NLS-1$
     MEDIUM(BUNDLE.getString("Settings.image.medium") + ": ~1280x720px", 2), //$NON-NLS-1$
     SMALL(BUNDLE.getString("Settings.image.small") + ": ~300x168px", 1); //$NON-NLS-1$
